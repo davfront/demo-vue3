@@ -1,0 +1,151 @@
+// Base styles
+.btn {
+  display: inline-block;
+  font-family: $font-family-base;
+  font-weight: $font-weight-normal;
+  line-height: $btn-line-height;
+  color: $body-color;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+  user-select: none;
+  background-color: transparent;
+  border: 1px solid transparent;
+  border-radius: $radius;
+  padding: $btn-padding;
+  font-size: $btn-font-size;
+  transition: color 0.15s $easing, background-color 0.15s $easing, border-color 0.15s $easing;
+
+  // default style
+  &.is-default {
+    border-color: $gray-300;
+    background-color: $white;
+    &:hover {
+      background-color: $gray-100;
+      border-color: $gray-400;
+    }
+
+    &:focus,
+    &.is-focus {
+      outline: 0;
+      background-color: $gray-100;
+      border-color: $gray-400;
+    }
+
+    &:active,
+    &.is-active {
+      background-color: $gray-200;
+      border-color: $gray-500;
+    }
+
+    &:disabled,
+    &.is-disabled {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+  }
+
+  // icons
+  &.has-icon {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+  }
+  &-iconLeft {
+    margin-right: 0.75em;
+  }
+  &-iconRight {
+    margin-left: 0.75em;
+  }
+
+  // block
+  &.is-block {
+    display: block;
+    &.has-icon {
+      display: flex;
+    }
+    width: 100%;
+  }
+
+  // loader
+  &.is-loading {
+    color: transparent !important;
+    pointer-events: none;
+
+    //spinner
+    position: relative;
+    &:after {
+      content: '';
+      display: block;
+      height: 1em;
+      width: 1em;
+      position: absolute;
+      left: calc(50% - (1em / 2));
+      top: calc(50% - (1em / 2));
+      border: 2px solid $gray-500;
+      border-radius: $radius-rounded;
+      border-right-color: transparent;
+      border-top-color: transparent;
+      animation: rotate 0.5s infinite linear;
+    }
+  }
+
+  // color variants
+  @each $theme, $color in $themes {
+    &.is-#{$theme} {
+      background: $color;
+      color: $white;
+      @if $theme == 'light' {
+        color: $body-color;
+      }
+
+      &:hover {
+        background-image: linear-gradient(to right, rgba(#000, 7.5%) 0%);
+      }
+
+      &:focus,
+      &.is-focus {
+        outline: 0;
+        background-image: linear-gradient(to right, rgba(#000, 7.5%) 0%);
+      }
+
+      &:active,
+      &.is-active {
+        background-image: linear-gradient(to right, rgba(#000, 10%) 0%);
+      }
+
+      &:disabled,
+      &.is-disabled {
+        opacity: 0.5;
+        pointer-events: none;
+      }
+
+      &.is-loading:after {
+        border-color: transparent transparent $white $white !important;
+        @if $theme == 'light' {
+          border-color: transparent transparent $body-color $body-color !important;
+        }
+      }
+    }
+  }
+
+  // size variants
+  &.is-xs {
+    padding: $btn-padding-xs;
+    font-size: $btn-font-size-xs;
+    line-height: $btn-line-height-xs;
+    border-radius: $radius-small;
+  }
+  &.is-sm {
+    padding: $btn-padding-sm;
+    font-size: $btn-font-size-sm;
+    line-height: $btn-line-height-sm;
+  }
+  &.is-lg {
+    padding: $btn-padding-lg;
+    font-size: $btn-font-size-lg;
+    line-height: $btn-line-height-lg;
+    border-radius: $radius-large;
+  }
+}

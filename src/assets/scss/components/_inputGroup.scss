@@ -1,0 +1,165 @@
+@use 'sass:math';
+
+// input group
+.inputGroup {
+  position: relative;
+  &-iconLeft,
+  &-iconRight,
+  &-iconClear {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: $input-font-size;
+    color: $gray-600;
+    font-weight: normal;
+    height: 1.75em;
+    width: 1.75em;
+    border-radius: 100%;
+
+    position: absolute;
+    z-index: 1;
+    top: math.div(1, 2) * $input-height;
+    margin-top: 1px;
+  }
+  &-iconLeft {
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    left: math.div(1, 2) * $input-height;
+    margin-left: 0.075em;
+  }
+  &-iconRight {
+    transform: translate(50%, -50%);
+    pointer-events: none;
+    right: math.div(1, 2) * $input-height;
+    margin-right: 0.075em;
+    &.is-link {
+      color: $primary;
+      pointer-events: initial;
+      cursor: pointer;
+      &:hover {
+        background: $gray-100;
+      }
+    }
+  }
+  &-iconClear {
+    transform: translate(50%, -50%) scale(0.875);
+    right: math.div(1, 2) * $input-height;
+    margin-right: 0.075em;
+    cursor: pointer;
+    &:hover {
+      color: $body-color;
+      background: $gray-100;
+    }
+  }
+  &.has-iconRight &-iconClear {
+    right: 1.25 * $input-height;
+  }
+
+  &.has-iconLeft .input {
+    padding-left: $input-height;
+  }
+
+  &.has-iconRight .input,
+  &.has-iconClear .input {
+    padding-right: $input-height;
+  }
+  &.has-iconRight.has-iconClear .input {
+    padding-right: 2 * $input-height;
+  }
+
+  // color variants
+  @each $theme, $color in $themes {
+    .input.is-#{$theme} ~ &-iconLeft,
+    .input.is-#{$theme} ~ &-iconRight {
+      color: $color;
+    }
+  }
+
+  // size variants
+  .input.is-xs ~ &-iconLeft,
+  .input.is-xs ~ &-iconRight,
+  .input.is-xs ~ &-iconClear {
+    font-size: $input-font-size-xs;
+    top: math.div(1, 2) * $input-height-xs;
+  }
+  &.is-xs &-iconLeft {
+    left: math.div(1, 2) * $input-height-xs;
+  }
+  &.is-xs &-iconRight {
+    right: math.div(1, 2) * $input-height-xs;
+  }
+  &.is-xs &-iconClear {
+    right: math.div(1, 2) * $input-height-xs;
+  }
+  &.is-xs.has-iconRight &-iconClear {
+    right: 1.25 * $input-height-xs;
+  }
+  &.is-xs.has-iconLeft .input {
+    padding-left: $input-height-xs;
+  }
+  &.is-xs.has-iconRight .input,
+  &.is-xs.has-iconClear .input {
+    padding-right: $input-height-xs;
+  }
+  &.is-xs.has-iconRight.has-iconClear .input {
+    padding-right: 2 * $input-height-xs;
+  }
+
+  .input.is-sm ~ &-iconLeft,
+  .input.is-sm ~ &-iconRight,
+  .input.is-sm ~ &-iconClear {
+    font-size: $input-font-size-sm;
+    top: math.div(1, 2) * $input-height-sm;
+  }
+  &.is-sm &-iconLeft {
+    left: math.div(1, 2) * $input-height-sm;
+  }
+  &.is-sm &-iconRight {
+    right: math.div(1, 2) * $input-height-sm;
+  }
+  &.is-sm &-iconClear {
+    right: math.div(1, 2) * $input-height-sm;
+  }
+  &.is-sm.has-iconRight &-iconClear {
+    right: 1.25 * $input-height-sm;
+  }
+  &.is-sm.has-iconLeft .input {
+    padding-left: $input-height-sm;
+  }
+  &.is-sm.has-iconRight .input,
+  &.is-sm.has-iconClear .input {
+    padding-right: $input-height-sm;
+  }
+  &.is-sm.has-iconRight.has-iconClear .input {
+    padding-right: 2 * $input-height-sm;
+  }
+
+  .input.is-lg ~ &-iconLeft,
+  .input.is-lg ~ &-iconRight,
+  .input.is-lg ~ &-iconClear {
+    font-size: $input-font-size-lg;
+    top: math.div(1, 2) * $input-height-lg;
+  }
+  &.is-lg &-iconLeft {
+    left: math.div(1, 2) * $input-height-lg;
+  }
+  &.is-lg &-iconRight {
+    right: math.div(1, 2) * $input-height-lg;
+  }
+  &.is-lg &-iconClear {
+    right: math.div(1, 2) * $input-height-lg;
+  }
+  &.is-lg.has-iconRight &-iconClear {
+    right: 1.25 * $input-height-lg;
+  }
+  &.is-lg.has-iconLeft .input {
+    padding-left: $input-height-lg;
+  }
+  &.is-lg.has-iconRight .input,
+  &.is-lg.has-iconClear .input {
+    padding-right: $input-height-lg;
+  }
+  &.is-lg.has-iconRight.has-iconClear .input {
+    padding-right: 2 * $input-height-lg;
+  }
+}

@@ -1,0 +1,127 @@
+@use 'sass:math';
+
+.input {
+  display: block;
+  max-width: 100%;
+  width: 100%;
+  padding: $input-padding;
+  font-family: $font-family-base;
+  font-size: $input-font-size;
+  font-weight: normal;
+  line-height: $input-line-height;
+  min-height: $input-height;
+  color: $body-color;
+  background-color: $white;
+  background-clip: padding-box;
+  border: 1px solid $gray-300;
+  border-radius: $radius;
+  box-shadow: 0 0 0 2px transparent;
+  outline: 0;
+  transition: color 0.15s $easing, background-color 0.15s $easing, border-color 0.15s $easing,
+    box-shadow 0.15s $easing;
+
+  // hover
+  &:hover,
+  &.is-hover {
+    border-color: $gray-500;
+  }
+
+  // focus
+  &:focus,
+  &.is-focus,
+  &:active,
+  &.is-active {
+    border-color: $primary;
+    box-shadow: 0 0 0 1px $primary;
+  }
+
+  // disabled
+  &:disabled,
+  &.is-disabled {
+    border-color: $gray-300;
+    background-color: $gray-100;
+    filter: grayscale(1);
+    box-shadow: none;
+    opacity: 1;
+    cursor: not-allowed;
+  }
+
+  // placeholder
+  &::placeholder,
+  &-placeholder {
+    color: $gray-500;
+    opacity: 1;
+  }
+
+  // Static
+  &-static {
+    display: block;
+    max-width: 100%;
+    width: 100%;
+    padding: $input-padding-y 0;
+    font-family: $font-family-base;
+    font-size: $input-font-size;
+    font-weight: normal;
+    line-height: $input-line-height;
+    color: $body-color;
+    background-clip: padding-box;
+    border: 1px solid transparent;
+    outline: 0;
+  }
+
+  // color variants
+  @each $theme, $color in $themes {
+    &.is-#{$theme} {
+      border-color: $color;
+      &:focus,
+      &.is-focus {
+        box-shadow: 0 0 0 1px $color;
+      }
+    }
+    &.is-focus-#{$theme} {
+      &:focus,
+      &.is-focus {
+        box-shadow: 0 0 0 1px $color;
+      }
+    }
+  }
+
+  // size variants
+  &.is-xs {
+    padding: $input-padding-xs;
+    font-size: $input-font-size-xs;
+    line-height: $input-line-height-xs;
+    min-height: $input-height-xs;
+    border-radius: $radius-small;
+  }
+  &-static.is-xs {
+    padding: $input-padding-y-xs 0;
+    font-size: $input-font-size-xs;
+    line-height: $input-line-height-xs;
+    min-height: $input-height-xs;
+  }
+  &.is-sm {
+    padding: $input-padding-sm;
+    font-size: $input-font-size-sm;
+    line-height: $input-line-height-sm;
+    min-height: $input-height-sm;
+  }
+  &-static.is-sm {
+    padding: $input-padding-y-sm 0;
+    font-size: $input-font-size-sm;
+    line-height: $input-line-height-sm;
+    min-height: $input-height-sm;
+  }
+  &.is-lg {
+    padding: $input-padding-lg;
+    font-size: $input-font-size-lg;
+    line-height: $input-line-height-lg;
+    min-height: $input-height-lg;
+  }
+  &-static.is-lg {
+    padding: $input-padding-y-lg 0;
+    font-size: $input-font-size-lg;
+    line-height: $input-line-height-lg;
+    min-height: $input-height-lg;
+  }
+}

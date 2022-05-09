@@ -1,1 +1,9 @@
 @import './abstracts/_variables';
+
+@import './base/_reset';
+@import './base/_generic';
+@import './base/_animations';
+
+@import './components/_button';
+@import './components/_input';
+@import './components/_inputGroup';
