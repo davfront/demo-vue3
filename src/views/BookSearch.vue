@@ -51,7 +51,7 @@ import VInput from '@/components/ui/VInput.vue'
 import VButton from '@/components/ui/VButton.vue'
 import VLoader from '@/components/ui/VLoader.vue'
 import BookItem from '@/components/BookItem.vue'
-import BookShelvesSvg from '@/assets/img/bookShelves.svg'
+import BookShelvesSvg from '@/assets/img/bookshelves.svg'
 
 import { getBooks } from '@/services/books'
 
