@@ -6,7 +6,7 @@
           class="bookSearch-input"
           v-model="searchInput"
           placeholder="Find a book"
-          :disabled="query.isRequesting"
+          :readonly="query.isRequesting"
           @keyup.enter="search()"
         />
         <VButton :disabled="query.isRequesting" @click="search()">Search</VButton>
