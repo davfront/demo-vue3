@@ -1,17 +1,33 @@
 <template>
   <div class="bookItem">
     <div class="bookItem-thumbnail">
-      <img class="bookItem-thumbnail-img" v-if="thumbnailLink" :src="thumbnailLink" :alt="title" />
-      <div class="bookItem-thumbnail-placeholder" v-else>No image availabe</div>
+      <img
+        v-if="thumbnailLink"
+        class="bookItem-thumbnail-img"
+        data-test="thumbnail"
+        :src="thumbnailLink"
+        :alt="title"
+      />
+      <div v-else class="bookItem-thumbnail-placeholder" data-test="noImageAvailable">
+        No image availabe
+      </div>
     </div>
     <div class="bookItem-details">
-      <div class="bookItem-title">{{ title || 'No title' }}</div>
+      <div class="bookItem-title" data-test="title">{{ title || 'No title available' }}</div>
       <div class="bookItem-metaInfo">
-        <span v-if="authors" class="bookItem-metaInfo-item">{{ authors }}</span>
-        <span v-if="publishedYear" class="bookItem-metaInfo-item">{{ publishedYear }}</span>
-        <span v-if="categories" class="bookItem-metaInfo-item">{{ categories }}</span>
+        <span v-if="authors" class="bookItem-metaInfo-item" data-test="authors">
+          {{ authors }}
+        </span>
+        <span v-if="publishedYear" class="bookItem-metaInfo-item" data-test="publishedYear">
+          {{ publishedYear }}
+        </span>
+        <span v-if="categories" class="bookItem-metaInfo-item" data-test="categories">
+          {{ categories }}
+        </span>
       </div>
-      <div class="bookItem-description" v-if="description">{{ description }}</div>
+      <div v-if="description" class="bookItem-description" data-test="description">
+        {{ description }}
+      </div>
     </div>
   </div>
 </template>
