@@ -1,13 +1,12 @@
 <template>
   <div
     class="inputGroup is-sm"
-    :class="{
-      'has-iconClear': value
-    }"
+    :class="[attrs.class, { 'has-iconClear': value }]"
+    :style="attrs.style"
   >
     <input
       class="inputGroup-input input is-sm"
-      v-bind="attrs"
+      v-bind="inputAttrs"
       type="text"
       v-model="value"
       :placeholder="props.placeholder"
@@ -18,11 +17,27 @@
   </div>
 </template>
 
+<script>
+export default {
+  inheritAttrs: false
+}
+</script>
+
 <script setup>
-import { ref, watch, useAttrs } from 'vue'
+import { ref, watch, useAttrs, computed } from 'vue'
 import CloseIcon from '@/assets/icons/close.svg'
 
 const attrs = useAttrs()
+
+const inputAttrs = computed(() => {
+  let returnObj = {}
+  for (const attr in attrs) {
+    if (attr !== 'class' || attr !== 'style') {
+      returnObj[attr] = attrs[attr]
+    }
+  }
+  return returnObj
+})
 
 const props = defineProps({
   modelValue: {

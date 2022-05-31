@@ -7,9 +7,9 @@
           v-model="searchInput"
           placeholder="Find a book"
           :readonly="query.isRequesting"
-          @keyup.enter="search()"
+          @keyup.enter="initQuery()"
         />
-        <VButton :disabled="query.isRequesting" @click="search()">Search</VButton>
+        <VButton :disabled="query.isRequesting" @click="initQuery()">Search</VButton>
       </div>
     </header>
     <main class="bookSearch-result">
@@ -23,13 +23,16 @@
           <BookShelvesSvg class="bookSearch-result-placeholder-img" />
         </div>
 
-        <!-- search processing -->
-        <div v-if="query.keywords && query.isRequesting" class="bookSearch-loader">
+        <!-- new search loader -->
+        <div
+          v-if="query.keywords && currentPage === 0 && query.isRequesting"
+          class="bookSearch-loader"
+        >
           <VLoader />
         </div>
 
-        <!-- search finished -->
-        <template v-if="query.keywords && !query.isRequesting">
+        <!-- results -->
+        <template v-if="query.keywords && currentPage > 0">
           <div class="bookSearch-result-title">
             <b>Search "{{ query.keywords }}":</b>
             {{ query.totalItems }}
@@ -39,13 +42,19 @@
             <BookItem v-for="book in query.books" :key="book.id" :book="book" />
           </div>
         </template>
+
+        <!-- more results -->
+        <div class="bookSearch-loadingMore" v-if="hasMoreResults" ref="loadMoreEl">
+          <VLoader class="bookSearch-loadingMore-loader" />
+          Loading more...
+        </div>
       </div>
     </main>
   </div>
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref, reactive, computed, watch } from 'vue'
 
 import VInput from '@/components/ui/VInput.vue'
 import VButton from '@/components/ui/VButton.vue'
@@ -54,6 +63,8 @@ import BookItem from '@/components/BookItem.vue'
 import BookShelvesSvg from '@/assets/img/bookshelves.svg'
 
 import { getBooks } from '@/services/books'
+
+const MAX_RESULTS = 40
 
 const searchInput = ref('')
 
@@ -64,24 +75,38 @@ const query = reactive({
   books: []
 })
 
-// get search result
-const search = async () => {
-  // reset query
+// computed refs
+const currentPage = computed(() => {
+  return Math.ceil(query.books.length / MAX_RESULTS)
+})
+const totalPages = computed(() => {
+  return Math.ceil(query.totalItems / MAX_RESULTS)
+})
+const hasMoreResults = computed(() => {
+  return currentPage.value < totalPages.value
+})
+
+// reset query
+const resetQuery = async () => {
   query.keywords = ''
   query.isRequesting = false
   query.totalItems = 0
   query.books = []
+}
 
-  // remove query extra spaces
-  query.keywords = searchInput.value.split(' ').filter(Boolean).join(' ')
-
-  // fetch books
-  if (query.keywords) {
+// load books
+const fetchMoreResults = async () => {
+  if (query.keywords && !query.isRequesting) {
     query.isRequesting = true
     try {
-      const data = await getBooks({ q: query.keywords, maxResults: 40 })
+      const data = await getBooks({
+        q: query.keywords,
+        maxResults: MAX_RESULTS,
+        startIndex: query.books.length
+      })
       query.totalItems = data?.totalItems || 0
-      query.books = data?.items || []
+      const newItems = data?.items || []
+      query.books.push(...newItems)
     } catch {
       // TODO: display a notification
       alert('An error occured !')
@@ -89,6 +114,34 @@ const search = async () => {
     query.isRequesting = false
   }
 }
+
+// init search
+const initQuery = async () => {
+  // reset query
+  resetQuery()
+
+  // remove query extra spaces
+  query.keywords = searchInput.value.split(' ').filter(Boolean).join(' ')
+
+  // fetch books
+  if (query.keywords) {
+    fetchMoreResults()
+  }
+}
+
+// load more books
+const loadMoreEl = ref(null)
+const observer = new IntersectionObserver((entries) => {
+  const firstEntry = entries[0]
+  if (firstEntry.isIntersecting) {
+    fetchMoreResults()
+  }
+})
+watch(loadMoreEl, async (newLoadMoreEl) => {
+  if (newLoadMoreEl) {
+    observer.observe(newLoadMoreEl)
+  }
+})
 </script>
 
 <style lang="scss" scoped>
@@ -172,7 +225,6 @@ $header-height: 4rem;
   }
 
   &-loader {
-    text-align: center;
     font-size: 2.5rem;
     color: $primary;
 
@@ -181,6 +233,24 @@ $header-height: 4rem;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+  }
+
+  &-loadingMore {
+    font-size: $font-size-7;
+    background: rgba($primary, 0.05);
+    border-radius: $radius;
+    padding: 0.75rem 0;
+    margin: 1.5rem;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &-loader {
+      color: $primary;
+      font-size: $font-size-5;
+      margin-right: 0.75em;
+    }
   }
 }
 </style>
